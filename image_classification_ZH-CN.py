@@ -17,7 +17,7 @@
 # 
 # 运行如下代码下载 [CIFAR-10 dataset for python](https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz)。
 
-# In[10]:
+# In[1]:
 
 """
 DON'T MODIFY ANYTHING IN THIS CELL THAT IS BELOW THIS LINE
@@ -95,7 +95,7 @@ tests.test_folder_path(cifar10_dataset_folder_path)
 # 
 # 对这些问题的回答，会有助于更好地处理数据，并能更好地进行预测。
 
-# In[11]:
+# In[2]:
 
 get_ipython().magic('matplotlib inline')
 get_ipython().magic("config InlineBackend.figure_format = 'retina'")
@@ -121,7 +121,7 @@ helper.display_stats(cifar10_dataset_folder_path, batch_id, sample_id)
 # **注意：**
 # 处理后的值应当在 $[0,1]$ 的范围之内。返回值应当和输入值具有相同的形状。
 
-# In[12]:
+# In[5]:
 
 def normalize(x):
     """
@@ -156,7 +156,7 @@ tests.test_normalize(normalize)
 # 
 # 你可以尝试使用 sklearn preprocessing 模块中的 `LabelBinarizer` 函数。
 
-# In[13]:
+# In[3]:
 
 def one_hot_encode(x):
     """
@@ -165,13 +165,11 @@ def one_hot_encode(x):
     : return: Numpy array of one-hot encoded labels
     """
     # TODO: Implement Function
-    from sklearn import preprocessing
-    labels = np.array([0,1,2,3,4,5,6,7,8,9])
-    lb = preprocessing.LabelBinarizer()
-    lb.fit(labels)
-    lb.transform(x)
     return lb.transform(x)
 
+from sklearn import preprocessing
+lb = preprocessing.LabelBinarizer()
+lb.fit(range(10))
 
 """
 DON'T MODIFY ANYTHING IN THIS CELL THAT IS BELOW THIS LINE
@@ -193,7 +191,7 @@ tests.test_one_hot_encode(one_hot_encode)
 # 
 # 运行如下代码，它将会预处理所有的 CIFAR-10 数据并将它另存为文件。此外，如下的代码还将会把 10% 的训练数据留出作为验证数据。
 
-# In[14]:
+# In[6]:
 
 """
 DON'T MODIFY ANYTHING IN THIS CELL
@@ -209,7 +207,7 @@ helper.preprocess_and_save_data(cifar10_dataset_folder_path, normalize, one_hot_
 # 
 # 这是你的首个检查点。因为预处理完的数据已经被保存到硬盘上了，所以如果你需要回顾或重启该 notebook，你可以在这里重新开始。
 
-# In[15]:
+# In[7]:
 
 """
 DON'T MODIFY ANYTHING IN THIS CELL
@@ -284,7 +282,7 @@ valid_features, valid_labels = pickle.load(open('preprocess_validation.p', mode=
 # 
 # **注意：**在 TensorFlow 中，对形状设定为 `None`，能帮助设定一个动态的大小。
 
-# In[16]:
+# In[8]:
 
 import tensorflow as tf
 
@@ -363,7 +361,7 @@ tests.test_nn_keep_prob_inputs(neural_net_keep_prob_input)
 # **提示：**
 # 当你在 Python 中希望展开（unpacking）某个变量的值作为函数的参数，你可以参考 [unpacking](https://docs.python.org/3/tutorial/controlflow.html#unpacking-argument-lists) 运算符。
 
-# In[64]:
+# In[9]:
 
 def conv2d_maxpool(x_tensor, conv_num_outputs, conv_ksize, conv_strides, pool_ksize, pool_strides):
     """
@@ -401,7 +399,7 @@ tests.test_con_pool(conv2d_maxpool)
 # 修改 `flatten` 函数，来将4维的输入张量 `x_tensor` 转换为一个二维的张量。输出的形状应当是 `(Batch Size, Flattened Image Size)`。
 # 快捷方法：你可以使用来自 [TensorFlow Layers](https://www.tensorflow.org/api_docs/python/tf/layers) 或 [TensorFlow Layers (contrib)](https://www.tensorflow.org/api_guides/python/contrib.layers) 包中的函数来实现该功能。不过你也可以只使用 TensorFlow 包中的函数来挑战自己。
 
-# In[18]:
+# In[10]:
 
 def flatten(x_tensor):
     """
@@ -428,7 +426,7 @@ tests.test_flatten(flatten)
 # 
 # 修改 `fully_conn` 函数，来对形如 `(batch Size, num_outputs)` 的输入 `x_tensor` 应用一个全连接层。快捷方法：你可以使用来自 [TensorFlow Layers](https://www.tensorflow.org/api_docs/python/tf/layers) 或 [TensorFlow Layers (contrib)](https://www.tensorflow.org/api_guides/python/contrib.layers) 包中的函数来实现该功能。不过你也可以只使用 TensorFlow 包中的函数来挑战自己。
 
-# In[19]:
+# In[11]:
 
 def fully_conn(x_tensor, num_outputs):
     """
@@ -459,7 +457,7 @@ tests.test_fully_conn(fully_conn)
 # **注意：**
 # 激活函数、softmax 或者交叉熵（corss entropy）**不**应被加入到该层。
 
-# In[20]:
+# In[12]:
 
 def output(x_tensor, num_outputs):
     """
@@ -499,7 +497,7 @@ tests.test_output(output)
 # * 返回呼出结果
 # * 在一个或多个层上使用 [TensorFlow's Dropout](https://www.tensorflow.org/api_docs/python/tf/nn/dropout)，对应的保留概率为 `keep_prob`. 
 
-# In[74]:
+# In[13]:
 
 def conv_net(x, keep_prob):
     """
@@ -592,7 +590,7 @@ tests.test_conv_net(conv_net)
 # 
 # 注意：该函数并不要返回某个值，它只对神经网络进行最优化。
 
-# In[27]:
+# In[14]:
 
 def train_neural_network(session, optimizer, keep_probability, feature_batch, label_batch):
     """
@@ -620,7 +618,7 @@ tests.test_train_nn(train_neural_network)
 # 
 # 修改 `print_stats` 函数来打印 loss 值及验证准确率。 使用全局的变量 `valid_features` 及 `valid_labels` 来计算验证准确率。 设定保留概率为 1.0 来计算 loss 值及验证准确率。
 
-# In[49]:
+# In[15]:
 
 def print_stats(session, feature_batch, label_batch, cost, accuracy):
     """
@@ -633,7 +631,7 @@ def print_stats(session, feature_batch, label_batch, cost, accuracy):
     """
     # TODO: Implement Function
     loss = session.run(cost, feed_dict={x:feature_batch, y:label_batch, keep_prob:1.0})
-    v_acc = session.run(accuracy, feed_dict={x:feature_batch, y:label_batch, keep_prob:1.0})
+    v_acc = session.run(accuracy, feed_dict={x:valid_features, y:valid_labels, keep_prob:1.0})
     print ('Loss={:.5f}'.format(loss), 'Accuracy={:.5f}'.format(v_acc))
     
 
@@ -659,12 +657,12 @@ def print_stats(session, feature_batch, label_batch, cost, accuracy):
 #  * ...
 # * 设定 `keep_probability` 为在 dropout 过程中保留一个节点的概率。
 
-# In[71]:
+# In[24]:
 
 # TODO: Tune Parameters
 epochs = 10
-batch_size = 64
-keep_probability = 0.5
+batch_size = 256
+keep_probability = 0.8
 
 
 # ### Train on a Single CIFAR-10 Batch
@@ -674,7 +672,7 @@ keep_probability = 0.5
 # 
 # 相比于在所有 CIFAR-10 数据上训练神经网络，我们首先使用一批数据进行训练。这会帮助你在调节模型提高精度的过程中节省时间。当最终的验证精度超过 50% 之后，你就可以前往下一节在所有数据上运行该模型了。
 
-# In[75]:
+# In[25]:
 
 """
 DON'T MODIFY ANYTHING IN THIS CELL
@@ -700,7 +698,7 @@ with tf.Session() as sess:
 # 
 # 因为你在单批 CIFAR-10 数据上已经得到了一个不错的准确率了，那你可以尝试在所有五批数据上进行训练。
 
-# In[76]:
+# In[26]:
 
 """
 DON'T MODIFY ANYTHING IN THIS CELL
@@ -740,7 +738,7 @@ with tf.Session() as sess:
 # 
 # 这部分将在测试数据集上测试你的模型。这边得到的准确率将作为你的最终准确率。你应该得到一个高于 50% 准确率。如果它没有超过 50%，那么你需要继续调整模型架构及参数。
 
-# In[77]:
+# In[27]:
 
 """
 DON'T MODIFY ANYTHING IN THIS CELL
